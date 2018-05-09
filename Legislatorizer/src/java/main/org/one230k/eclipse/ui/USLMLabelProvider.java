@@ -1,4 +1,4 @@
-package legislatorizer;
+package org.one230k.eclipse.ui;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;

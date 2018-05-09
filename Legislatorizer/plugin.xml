@@ -6,30 +6,14 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="Perspective"
-            class="legislatorizer.Perspective"
+            class="org.one230k.eclipse.ui.Perspective"
             id="Legislatorizer.perspective">
       </perspective>
-   </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            name="View"
-            inject="true"
-            class="legislatorizer.View"
-            id="Legislatorizer.view">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="*">
-         <view
-               standalone="true"
-               minimized="false"
-               relative="org.eclipse.ui.editorss"
-               relationship="left"
-               id="Legislatorizer.view">
-         </view>
       </perspectiveExtension>
    </extension>
    <extension
@@ -48,19 +32,18 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="legislatorizer.editors.MultiPageEditor"
-            contributorClass="legislatorizer.editors.MultiPageEditorContributor"
-            extensions="mpe"
+            class="org.one230k.eclipse.ui.TitleEditor"
+            extensions="xml"
             icon="icons/sample.png"
-            id="legislatorizer.editors.MultiPageEditor"
-            name="Sample Multi-page Editor">
+            id="legislatorizer.TitleEditor"
+            name="U.S.C. Title">
       </editor>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
-            adaptableType="legislatorizer.editors.MultiPageEditor"
-            class="legislatorizer.USLMAdapterFactory">
+            adaptableType="org.one230k.eclipse.ui.TitleEditor"
+            class="org.one230k.eclipse.ui.USLMAdapterFactory">
          <adapter
                type="org.eclipse.ui.views.contentoutline.IContentOutlinePage">
          </adapter>

@@ -1,17 +1,17 @@
-package legislatorizer;
+package org.one230k.eclipse.ui;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-
-import legislatorizer.editors.TitleEditor;
 
 public class USLMAdapterFactory implements IAdapterFactory {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (IContentOutlinePage.class.equals(adapterType)) {
-			TitleEditor editor = (TitleEditor) adaptableObject;
-			return (T) new USLMContentOutlinePage(editor.getModel());
+			EditorPart editor = (EditorPart) adaptableObject;
+			return (T) new USLMContentOutlinePage(editor.getEditorInput());
 		}
 		return null;
 	}
