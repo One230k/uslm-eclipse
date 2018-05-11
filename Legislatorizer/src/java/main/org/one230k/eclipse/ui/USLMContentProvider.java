@@ -17,6 +17,7 @@ public class USLMContentProvider implements ITreePathContentProvider {
 		
 		Level level = (Level) inputElement;
 		if (level != null) {
+//			UslmPlugin.logInfo(String.format("%d  %s", level.getChildren().size(), level.getIdentifier()));
 			return level.getChildren().toArray();
 		}
 		
@@ -32,7 +33,8 @@ public class USLMContentProvider implements ITreePathContentProvider {
 
 	@Override
 	public boolean hasChildren(TreePath path) {
-		return true;
+		Level level = (Level) path.getLastSegment();
+		return (level != null && level.getChildren().size() > 0);
 	}
 
 	@Override

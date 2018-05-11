@@ -14,6 +14,8 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.one230k.eclipse.model.Chapter;
 import org.one230k.eclipse.model.Level;
+import org.one230k.eclipse.model.Note;
+import org.one230k.eclipse.model.Notes;
 import org.one230k.eclipse.model.Part;
 import org.one230k.eclipse.model.Section;
 import org.one230k.eclipse.model.Subsection;
@@ -38,13 +40,18 @@ public class SaxUslmParser extends DefaultHandler {
 		newLevel.setIdentifier(attributes.getValue("identifier"));
 
 		if (currentLevel != null) {
+//			UslmPlugin.logInfo(String.format("start  - %s | %s", newLevel.getIdentifier(), currentLevel.getIdentifier()));
 			currentLevel.getChildren().add(newLevel);
+		} else {
+//			UslmPlugin.logInfo(String.format("root   - %s", newLevel.getIdentifier()));
 		}
 		currentLevel = newLevel;
 	}
 	
 	private void endLevel() {
-		if (currentLevel != null) {
+
+		if (currentLevel != null && !bContent) {
+//			UslmPlugin.logInfo(String.format("ending - %s", currentLevel.getIdentifier()));
 			currentLevel = currentLevel.getParent();
 		}
 	}
@@ -56,20 +63,27 @@ public class SaxUslmParser extends DefaultHandler {
 			// skip HTML
 		} else if (qName.equalsIgnoreCase("title")) {
 			startLevel(new Title(), attributes);
-		} else if (qName.equalsIgnoreCase("chapter")) {
-			startLevel(new Chapter(), attributes);
-		} else if (qName.equalsIgnoreCase("subsection")) {
-			startLevel(new Subsection(), attributes);
+			root = currentLevel;
+		} else if (qName.equalsIgnoreCase("notes")) {
+			startLevel(new Notes(), attributes);
+		} else if (qName.equalsIgnoreCase("note")) {
+			startLevel(new Note(), attributes);
+			currentLevel.setHeading(attributes.getValue("topic"));
+			currentLevel.setIdentifier("note");
 		} else if (qName.equalsIgnoreCase("part")) {
 			startLevel(new Part(), attributes);
+		} else if (qName.equalsIgnoreCase("chapter")) {
+			startLevel(new Chapter(), attributes);
+		} else if (qName.equalsIgnoreCase("section")) {
+			startLevel(new Section(), attributes);
+		} else if (qName.equalsIgnoreCase("subsection")) {
+			startLevel(new Subsection(), attributes);
+
 		} else if (qName.equalsIgnoreCase("num")) {
 			if (currentLevel != null) {
 				currentLevel.setNum(attributes.getValue("value"));
 			}
-		} else if (qName.equalsIgnoreCase("section")) {
-			if (currentLevel != null) {
-				currentLevel = new Section();
-			}
+
 		} else if (qName.equalsIgnoreCase("heading")) {
 			bHeading = true;
 		} else if (qName.equalsIgnoreCase("content")) {
@@ -81,7 +95,13 @@ public class SaxUslmParser extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 
-		if (qName.equalsIgnoreCase("title")) {
+		if (qName.equalsIgnoreCase("content")) {
+			bContent = false;
+		} else if (qName.equalsIgnoreCase("title")) {
+			endLevel();
+		} else if (qName.equalsIgnoreCase("notes")) {
+			endLevel();
+		} else if (qName.equalsIgnoreCase("note")) {
 			endLevel();
 		} else if (qName.equalsIgnoreCase("part")) {
 			endLevel();
@@ -91,8 +111,6 @@ public class SaxUslmParser extends DefaultHandler {
 			endLevel();
 		} else if (qName.equalsIgnoreCase("subsection")) {
 			endLevel();
-		} else if (qName.equalsIgnoreCase("content")) {
-			bContent = false;
 		} else if (qName.equalsIgnoreCase("heading")) {
 			bHeading = false;
 		}

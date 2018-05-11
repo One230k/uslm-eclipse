@@ -1,6 +1,5 @@
 package org.one230k.eclipse.ui;
 
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
@@ -27,8 +26,9 @@ public class USLMContentOutlinePage extends ContentOutlinePage {
 		viewer.addSelectionChangedListener(this);
 		try {
 			viewer.setInput(SaxUslmParser.parse(file));
+			getSite().setSelectionProvider(viewer);
 		} catch (PartInitException e) {
-			UslmPlugin.getPlugin().getLog().log(new Status(Status.ERROR, "org.one230k.eclipse", Status.OK, "Failed to create outline control", e));
+			UslmPlugin.logError("Couldn't create the Outline", e);
 		}
 	}
 	

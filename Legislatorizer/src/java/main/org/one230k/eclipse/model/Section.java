@@ -13,7 +13,7 @@ public class Section extends Level {
 
 	@Override
 	public String toString() {
-		return String.format("§ %d - %s", this.getNum(), this.getHeading());
+		return String.format("§ %s - %s", this.getNum(), this.getHeading());
 	}
 	
 }
