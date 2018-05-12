@@ -22,12 +22,14 @@ import org.one230k.eclipse.model.Subsection;
 import org.one230k.eclipse.model.Title;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SaxUslmParser extends DefaultHandler {
 
-	private Level root = null;
+    private Locator locator;
+	private Title root = null;
 	private Level currentLevel = null;
 	private boolean bHeading = false;
 	private boolean bContent = false;
@@ -38,6 +40,7 @@ public class SaxUslmParser extends DefaultHandler {
 		newLevel.setParent(currentLevel);
 		newLevel.setId(attributes.getValue("id"));
 		newLevel.setIdentifier(attributes.getValue("identifier"));
+		newLevel.setLineNumber(locator.getLineNumber());
 
 		if (currentLevel != null) {
 //			UslmPlugin.logInfo(String.format("start  - %s | %s", newLevel.getIdentifier(), currentLevel.getIdentifier()));
@@ -46,6 +49,7 @@ public class SaxUslmParser extends DefaultHandler {
 //			UslmPlugin.logInfo(String.format("root   - %s", newLevel.getIdentifier()));
 		}
 		currentLevel = newLevel;
+		
 	}
 	
 	private void endLevel() {
@@ -62,8 +66,8 @@ public class SaxUslmParser extends DefaultHandler {
 		if (bContent) {
 			// skip HTML
 		} else if (qName.equalsIgnoreCase("title")) {
-			startLevel(new Title(), attributes);
-			root = currentLevel;
+			root = new Title();
+			startLevel(root, attributes);
 		} else if (qName.equalsIgnoreCase("notes")) {
 			startLevel(new Notes(), attributes);
 		} else if (qName.equalsIgnoreCase("note")) {
@@ -126,7 +130,12 @@ public class SaxUslmParser extends DefaultHandler {
 		}
 	}
 	
-	public Title getTitle() {
+    @Override
+    public void setDocumentLocator(final Locator saxLocator) {
+        this.locator = saxLocator;
+    }
+
+    public Title getTitle() {
 		return (Title) root;
 	}
 	

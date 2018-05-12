@@ -39,7 +39,12 @@ public class USLMContentProvider implements ITreePathContentProvider {
 
 	@Override
 	public TreePath[] getParents(Object element) {
-		return null;
+		Level level = (Level) element;
+		if (level != null && level.getParent() != null) {
+			return new TreePath[] { new TreePath(level.getParent().getPath()) };
+		} else {
+			return new TreePath[0];
+		}
 	}
 
 }

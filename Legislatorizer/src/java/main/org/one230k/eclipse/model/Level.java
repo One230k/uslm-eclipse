@@ -2,6 +2,7 @@ package org.one230k.eclipse.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public abstract class Level {
 
@@ -9,6 +10,7 @@ public abstract class Level {
 	private String num;
 	private String id;
 	private String identifier;
+	private int lineNumber;
 	private Level parent;
 	private List<Level> children = new ArrayList<Level>();
 
@@ -49,10 +51,34 @@ public abstract class Level {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
+	public int getLineNumber() {
+		return lineNumber;
+	}
+	public void setLineNumber(int lineNumber) {
+		this.lineNumber = lineNumber;
+	}
 
 	
 	@Override
 	public String toString() {
 		return this.heading;
+	}
+	public Object[] getPath() {
+		Stack<Object> stack = new Stack<Object>(); 
+		Level node = this;
+
+		do {
+			stack.push(node);
+			node = node.parent;
+		} while (node != null);
+		
+		Object[] reverse = stack.toArray();
+		Object[] finished = new Object[reverse.length];
+		
+		for (int i = 0; i < reverse.length; i++) {
+			finished[reverse.length - i - 1] = reverse[i];
+		}
+		
+		return finished;
 	}
 }
