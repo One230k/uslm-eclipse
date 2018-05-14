@@ -1,5 +1,9 @@
 package org.one230k.eclipse.ui;
 
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.FindReplaceDocumentAdapter;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.swt.widgets.Composite;
@@ -19,12 +23,21 @@ public class TitleEditor extends TextEditor implements ISelectionListener {
 
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (selection.getClass().isAssignableFrom(ITreeSelection.class)) {
+		if (ITreeSelection.class.isAssignableFrom(selection.getClass())) {
 			ITreeSelection treeS = (ITreeSelection) selection;
-			if (treeS != null && treeS.getFirstElement().getClass().isAssignableFrom(Level.class)) {
+			if (treeS != null && treeS.getPaths().length > 0 && Level.class.isAssignableFrom(treeS.getPaths()[0].getLastSegment().getClass())) {
 				Level level = (Level) treeS.getPaths()[0].getLastSegment();
 				if (level != null) {
-					UslmPlugin.logInfo(String.format("%s", level.getIdentifier()));
+					IDocument doc = this.getDocumentProvider().getDocument(this.getEditorInput());
+					FindReplaceDocumentAdapter finder = new FindReplaceDocumentAdapter(doc);
+					try {
+						IRegion region = finder.find(0, String.format("id=\"%s\"", level.getId()), true, false, false, false);
+						if (region != null) {
+							this.selectAndReveal(region.getOffset(), region.getLength());
+						}
+					} catch (BadLocationException e) {
+						UslmPlugin.logError(String.format("%s", level.getIdentifier()), e);
+					}
 				}
 			}
 		}
