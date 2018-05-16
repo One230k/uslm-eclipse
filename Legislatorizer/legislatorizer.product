@@ -38,12 +38,20 @@
       <plugin id="ch.qos.logback.classic"/>
       <plugin id="ch.qos.logback.core"/>
       <plugin id="ch.qos.logback.slf4j" fragment="true"/>
+      <plugin id="com.google.gerrit.common"/>
+      <plugin id="com.google.gerrit.prettify"/>
+      <plugin id="com.google.gerrit.reviewdb"/>
+      <plugin id="com.google.gson"/>
       <plugin id="com.google.guava"/>
+      <plugin id="com.google.gwt.servlet"/>
+      <plugin id="com.google.gwtjsonrpc"/>
+      <plugin id="com.google.gwtorm"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.jcraft.jsch"/>
       <plugin id="javaewah"/>
       <plugin id="javax.annotation"/>
       <plugin id="javax.inject"/>
+      <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
       <plugin id="org.apache.ant"/>
       <plugin id="org.apache.batik.css"/>
@@ -165,11 +173,16 @@
       <plugin id="org.eclipse.mylyn.commons.workbench"/>
       <plugin id="org.eclipse.mylyn.context.core"/>
       <plugin id="org.eclipse.mylyn.context.ui"/>
+      <plugin id="org.eclipse.mylyn.gerrit.core"/>
+      <plugin id="org.eclipse.mylyn.gerrit.ui"/>
       <plugin id="org.eclipse.mylyn.git.core"/>
       <plugin id="org.eclipse.mylyn.git.ui"/>
       <plugin id="org.eclipse.mylyn.monitor.core"/>
       <plugin id="org.eclipse.mylyn.monitor.ui"/>
       <plugin id="org.eclipse.mylyn.resources.ui"/>
+      <plugin id="org.eclipse.mylyn.reviews.core"/>
+      <plugin id="org.eclipse.mylyn.reviews.edit"/>
+      <plugin id="org.eclipse.mylyn.reviews.ui"/>
       <plugin id="org.eclipse.mylyn.tasks.core"/>
       <plugin id="org.eclipse.mylyn.tasks.ui"/>
       <plugin id="org.eclipse.mylyn.team.ui"/>
